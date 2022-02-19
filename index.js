@@ -1,16 +1,17 @@
-// TODO: Include packages needed for this application
-const{regesterPrompt} = require('inquirer');
+// Include packages needed for this application
+const{registerPrompt} = require('inquirer');
 const inquirer = require('inquirer');
 const fs = require('fs');
 //const {writeToFile, copyFile} = require()
 const generateMarkdown = require('./utils/generateMarkdown')
 
-// TODO: Create an array of questions for user input
-const promptQuestions() {
+// Create an array of questions for user input
+const promptQuestions=()=>{
     return inquirer.prompt([
-        type: 'input',
-        name: 'fullName',
-        message: 'What is your full name? (Required)',
+        
+        {type:'input',
+        name:'fullName',
+        message:'What is your full name? (Required)',
         validate: fullNameInput => {
           if (fullNameInput) {
             return true;
@@ -19,8 +20,7 @@ const promptQuestions() {
             return false;
           }
         }
-      },
-      {
+      },{
         type: 'input',
         name: 'email',
         message: 'What is your email address? (Required)',
@@ -32,8 +32,7 @@ const promptQuestions() {
             return false;
           }
         }
-      },
-      {
+      },{
         type: 'input',
         name: 'githubUserName',
         message: 'What is your GitHub user Name? (Required)',
@@ -87,10 +86,10 @@ const promptQuestions() {
       },
       {
         type: 'input',
-        name: 'useage',
+        name: 'usage',
         message: 'Please enter the url for your screenshot.(Required)',
-        validate: useageInput => {
-          if(useageInput) {
+        validate: usageInput => {
+          if(usageInput) {
             return true;
           } else {
             console.log('Please enter your screenshot url');
@@ -99,22 +98,22 @@ const promptQuestions() {
         }
       },
       {
-       type: 'input',
-       name: 'contributing',
-       message: 'List all those that contributed to the project.(Required)',
-       validate: contributingInput => {
-         if (contributingInput) {
-           return true;
-         } else {
-           console.log('Please list all contributors.');
-           return false;
-         }
-       }
+      type: 'input',
+      name: 'contributing',
+      message: 'List all those that contributed to the project.(Required)',
+      validate: contributingInput => {
+        if (contributingInput) {
+          return true;
+        } else {
+          console.log('Please list all contributors.');
+          return false;
+        }
+      }
       },
       {
         type: 'input',
         name: 'tests',
-        message: 'Tell us about any tests associated with this project',
+        message: 'Tell us about any tests associated with this project'
       },
       {
         type: "list",
@@ -125,16 +124,17 @@ const promptQuestions() {
     ])
 };
  //title of my project and sections entitled Description, Table of Contents, Installation, Usage, License, Contributing, Tests, and Questions
-// TODO: Create a function to write README file
+// Create a function to write README file
 function writeToFile(fileName, data) {
-fs.writeToFile(fileName, data)}
+fs.writeFile(fileName, data, err=>{if (err){console.log(err)}})};
 
-// TODO: Create a function to initialize app
+//Create a function to initialize app
 function init() {
-    promptQuestions().then(answers => {
-        writeToFile("README.md", generateMarkdown(answers))
-    })
-}
+    promptQuestions()
+    .then(answers => {return generateMarkdown(answers)})
+    .then(content=>{return writeToFile('README.md',content)})
+    };
+
 
 // Function call to initialize app
 init();
